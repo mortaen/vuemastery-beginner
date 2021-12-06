@@ -1,9 +1,10 @@
 <script>
 import { defineComponent } from "vue";
 import Details from "./Details.vue";
+import ProductReview from "./ProductReview.vue";
 
 export default defineComponent({
-  components: { Details },
+  components: { Details, ProductReview },
   props: {
     premium: {
       type: Boolean,
@@ -43,6 +44,7 @@ export default defineComponent({
           size: "39-42",
         },
       ],
+      reviews: [],
     };
   },
   methods: {
@@ -58,6 +60,9 @@ export default defineComponent({
     updateProduct(index) {
       this.selectedVariant = index;
       console.log(index);
+    },
+    addReview(productReview) {
+      this.reviews.push(productReview);
     },
   },
   computed: {
@@ -137,6 +142,18 @@ export default defineComponent({
       >
         Remove from cart
       </button>
+      <div>
+        <h2>Reviews</h2>
+        <p v-if="!reviews.length">There are no reviews yet</p>
+        <ul>
+          <li v-for="review in reviews">
+            <p>{{ review.name }}</p>
+            <p>Rating: {{ review.rating }}</p>
+            <p>{{ review.review }}</p>
+          </li>
+        </ul>
+      </div>
+      <ProductReview @review-submitted="addReview" />
     </div>
   </div>
 </template>
